@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import axios from 'axios';
-import { apiURL2 } from '../settings';
+import { apiURL2, apiURL } from '../settings';
 import {
   TemperatureUnits as Units,
   kelvinConverter,
@@ -46,7 +46,9 @@ class WeatherStore {
       ],
     };
   }
-
+  disableLoading(){
+    this.loading = false;
+  }
   fetchWeatherReport() {
     this.loading = true;
     this.isError = false;
@@ -56,9 +58,10 @@ class WeatherStore {
       .then((res) => {
         this.city = res.data.city;
         this.modify(res.data);
-        this.loading = false;
+        this.disableLoading();
       })
       .catch(() => {
+        console.error("hey error")
         this.isError = true;
         this.errorMessage =
           'There was a error while fetching data. Please click refresh to try again';

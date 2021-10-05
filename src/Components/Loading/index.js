@@ -8,7 +8,7 @@ export default function Loading() {
   return (
     <div>
       <br />
-      <Slider {...set}>
+      <Slider {...set} id="skeleton">
         <div>
           <Skeleton variant="rectangular" width={'95%'} height={118} />
           <Skeleton width="95%" />

@@ -69,21 +69,6 @@ function Weather() {
     store.setSelectedDay(value.data, index);
   };
 
-  const graphTooltipData = () => {
-    const humidity = [];
-    const pressure = [];
-    const seaLevel = [];
-    toJS(store.selectedDay).map((list) => {
-      humidity.push('humidity: ' + list.main.humidity);
-      pressure.push('pressure: ' + list.main.pressure);
-      seaLevel.push('sea level: ' + list.main.sea_level);
-    });
-    setTooltipData({ humidity, pressure, seaLevel });
-    return { humidity, pressure, seaLevel };
-  };
-
-  // graphTooltipData();
-
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -118,7 +103,7 @@ function Weather() {
           </Grid>
         </Grid>
       </Box>
-      <Slider>
+      <Slider id="slide">
         {store.report.length > 0 &&
           toJS(store.report).map(({ date, value }, index) => (
             <WeatherCard
@@ -146,7 +131,6 @@ function Weather() {
             data={store.graphDataset}
             rawData={store.selectedDay}
             unit={store.unit}
-            //  tooltipData={graphTooltipData()}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={2}></Grid>
