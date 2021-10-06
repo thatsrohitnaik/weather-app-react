@@ -8,101 +8,52 @@ import Slider from '../Components/Slider';
 import { kelvinConverter } from '../Util/temperature';
 import { toJS } from 'mobx';
 import { TemperatureUnits as Units, getUnits } from '../Util/temperature';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { makeStyles } from '@mui/styles';
 import WeatherGraph from '../Components/Graph/';
-
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '& .MuiToggleButtonGroup-grouped': {
-    margin: theme.spacing(0.1),
-    border: 0,
-    '&.Mui-disabled': {
-      border: 0,
-    },
-    '&:not(:first-of-type)': {
-      borderRadius: theme.shape.borderRadius,
-    },
-    '&:first-of-type': {
-      borderRadius: theme.shape.borderRadius,
-    },
-  },
-}));
+import Unitselectore from '../Components/Unitselector/';
+import Stack from '@mui/material/Stack';
+import Container from '@mui/material/Container';
 
 const useStyles = makeStyles({
   icon: {
     position: 'relative',
     top: '50%',
-    transform: 'translateY(-50%)',
-    marginTop: -10,
+    transform: 'translateY(35%)',
   },
+  iconCenter: {
+    margin: 'auto',
+    width: '100%',
+  }
 });
 
 function Weather() {
   const { weatherStore: store } = React.useContext(GlobalContext);
   const [unit, setUnit] = React.useState(store.unit || Units.Fahrenheit);
-  const [tooltipData, setTooltipData] = React.useState();
 
-  const handleChange = (event) => {
+  const handleUnitChange = (event) => {
     setUnit(event.target.value);
     store.setUnit(event.target.value);
   };
   const classes = useStyles();
 
-  useEffect(() => {
-    store.fetchWeatherReport();
-  }, []);
+  useEffect(() => store.fetchWeatherReport(), []);
 
-  if (store.loading) {
-    return <Loading />;
-  }
+  if (store.loading) return <Loading />;
 
-  if (store.isError) {
-    return <Error message={store.errorMessage} />;
-  }
+  if (store.isError) return (<><Error errorMessage={store.errorMessage} />  <RefreshIcon
+    className={classes.icon+" "+classes.iconCenter}
+    onClick={() => {
+      store.fetchWeatherReport();
+    }}
+  /> </>)
 
-  const showGraph = (value, index) => {
-    store.setSelectedDay(value.data, index);
-  };
+  const showGraph = (value, index) => store.setSelectedDay(value.data, index);
+
+
 
   return (
-    <div>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container>
-          <Grid key={1} item xs={12}>
-            <StyledToggleButtonGroup
-              size="small"
-              value={unit}
-              exclusive
-              onChange={handleChange}
-              aria-label="Temperature"
-            >
-              <ToggleButtonGroup
-                color="primary"
-                value={unit}
-                exclusive
-                onChange={handleChange}
-              >
-                {Object.entries(Units).map(([key, value]) => (
-                  <ToggleButton value={value} key={key}>
-                    {getUnits(value)}
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-            </StyledToggleButtonGroup>
-            <RefreshIcon
-              className={classes.icon}
-              onClick={() => {
-                store.fetchWeatherReport();
-              }}
-            />
-          </Grid>
-        </Grid>
-      </Box>
+    <>
       <Slider id="slide">
         {store.report.length > 0 &&
           toJS(store.report).map(({ date, value }, index) => (
@@ -119,23 +70,25 @@ function Weather() {
             />
           ))}
       </Slider>
-      <Grid
-        container
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-      >
-        <Grid item xs={12} sm={12} md={2}></Grid>
-
-        <Grid item xs={12} sm={12} md={8}>
-          <WeatherGraph
-            data={store.graphDataset}
-            rawData={store.selectedDay}
-            unit={store.unit}
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={2}></Grid>
-      </Grid>
-    </div>
+      <Stack direction="row" spacing={2}>
+        <Unitselectore
+          unit={unit}
+          handleUnitChange={handleUnitChange} />
+        <RefreshIcon
+          className={classes.icon}
+          onClick={() => {
+            store.fetchWeatherReport();
+          }}
+        />
+      </Stack>
+      <Container maxWidth="md">
+        <WeatherGraph
+          data={store.graphDataset}
+          rawData={store.selectedDay}
+          unit={store.unit}
+        />
+      </Container>
+    </>
   );
 }
 

@@ -44,6 +44,8 @@ function SlideClouds({ value }) {
                   overflow: 'hidden',
                   width: '90px',
                   height: '90px',
+                  margin: 'auto',
+                  marginTop: '-15px'
                 }}
                 src={getIcon(step.weather[0].icon)}
                 alt={step.label}

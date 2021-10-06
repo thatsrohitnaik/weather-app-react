@@ -51,6 +51,7 @@ export const externalTooltipHandler = (context, unit, rawData) => {
     titleLines.forEach((title) => {
       const tr = document.createElement('tr');
       tr.style.borderWidth = 0;
+      tr.style.color = 'white';
 
       const th = document.createElement('th');
       th.style.borderWidth = 0;
@@ -73,6 +74,7 @@ export const externalTooltipHandler = (context, unit, rawData) => {
       const td = document.createElement('td');
       td.style.borderWidth = 0;
       td.style.fontSize = 'small';
+      td.style.color = 'white';
 
       const text = document.createTextNode(body);
 

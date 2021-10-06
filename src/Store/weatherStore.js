@@ -11,7 +11,7 @@ class WeatherStore {
   report = [];
   loading = false;
   isError = false;
-  errorMessage = '';
+  errorMessage = 'There was an error while fetching report!';
   selectedDay = [];
   graphDataset = [];
   city = {};
@@ -46,23 +46,25 @@ class WeatherStore {
       ],
     };
   }
-  disableLoading(){
+  
+  disableLoading() {
     this.loading = false;
   }
+
   fetchWeatherReport() {
     this.loading = true;
     this.isError = false;
     this.errorMessage = '';
     axios
-      .get(apiURL2)
+      .get(apiURL)
       .then((res) => {
         this.city = res.data.city;
         this.modify(res.data);
         this.disableLoading();
       })
       .catch(() => {
-        console.error("hey error")
         this.isError = true;
+        this.disableLoading();
         this.errorMessage =
           'There was a error while fetching data. Please click refresh to try again';
       });
@@ -93,10 +95,7 @@ class WeatherStore {
       map.set(key, { avgTemp: currentAvgTemp, data: list });
     });
 
-    this.report = Array.from(map, ([date, value]) => ({
-      date,
-      value,
-    }));
+    this.report = Array.from(map, ([date, value]) => ({date, value}));
 
     this.setSelectedDay(this.report[0].value.data, 0);
   }
