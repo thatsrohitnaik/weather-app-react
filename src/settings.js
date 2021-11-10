@@ -5,9 +5,11 @@ export const slideSettings = {
   slidesToShow: 3,
   slidesToScroll: 1,
   initialSlide: 0,
-  afterChange: function (){
-    console.log("afte change")
-  },
+  // afterChange: function (){
+  //   console.log("afte change")
+  //   // if we can connect store here then all isse ares solved
+   
+  // },
   responsive: [
     {
       breakpoint: 1024,
