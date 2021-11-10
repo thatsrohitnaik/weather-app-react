@@ -19,6 +19,7 @@ class WeatherStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.currentSildeIndex = localStorage.getItem('lastSlideIndex') || 0 ;
   }
 
   setUnit(unit) {
@@ -27,9 +28,27 @@ class WeatherStore {
       this.setSelectedDay(this.selectedDay, this.currentSildeIndex);
   }
 
+  // on after we need to check if currently selected card is visible or not 
+  // so it would be nice to know which is the current card that is selected 
+
+  // setSlide(){
+
+  //   const lastSlideWas = localStorage.getItem('lastSlideIndex')
+
+  // }
+
+  setCurrentSlideOnLocal(index){
+    localStorage.setItem('lastSlideIndex', index);
+  }
+
+
   setSelectedDay(value, index) {
+
+    console.log(index, "heyy");
+
     this.selectedDay = value;
     this.currentSildeIndex = index;
+    this.setCurrentSlideOnLocal(index);
     const label = [];
     const max = [];
     const min = [];
@@ -97,7 +116,14 @@ class WeatherStore {
 
     this.report = Array.from(map, ([date, value]) => ({date, value}));
 
-    this.setSelectedDay(this.report[0].value.data, 0);
+    // do the magic here 
+
+    const lastSlideIndex = localStorage.getItem('lastSlideIndex') || 0 ;
+    console.log(lastSlideIndex, "lastSlideIndex")
+
+    this.currentSildeIndex = lastSlideIndex;
+
+    this.setSelectedDay(this.report[lastSlideIndex].value.data, lastSlideIndex);
   }
 }
 

@@ -60,13 +60,16 @@ export default function WeatherCard(props) {
     index,
     currentSildeIndex,
   } = props;
+
+  console.log(currentSildeIndex, "this is what we get");
+  
   const classes = useStyles();
   return (
     <Card
       key={Math.random()}
       sx={{ margin: 1 }}
       className={
-        currentSildeIndex === index ? classes.cardSelect : classes.card
+        +currentSildeIndex === index ? classes.cardSelect : classes.card
       }
       onClick={() => {
         showGraph(value, index);

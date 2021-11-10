@@ -5,6 +5,9 @@ export const slideSettings = {
   slidesToShow: 3,
   slidesToScroll: 1,
   initialSlide: 0,
+  afterChange: function (){
+    console.log("afte change")
+  },
   responsive: [
     {
       breakpoint: 1024,
@@ -31,6 +34,7 @@ export const slideSettings = {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
+        className: 'mobile-view-carousel'
       },
     },
   ],
