@@ -12,3 +12,11 @@ p {
   height: 100%;
   max-height: 170px;
 }
+
+.slick-prev {
+  left: -15px !important;
+}
+
+.slick-next {
+  right: -15px !important;
+}
