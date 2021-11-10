@@ -13,10 +13,11 @@ p {
   max-height: 170px;
 }
 
-.slick-prev {
-  left: -15px !important;
+.mobile-view-carousel  .slick-next {
+  right: -15px !important;
 }
 
-.slick-next {
-  right: -15px !important;
+
+.mobile-view-carousel  .slick-prev {
+  left: -15px !important;
 }
